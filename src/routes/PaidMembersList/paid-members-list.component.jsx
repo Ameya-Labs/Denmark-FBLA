@@ -3,7 +3,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router";
 
-import { auth, updatePaidMemberDoc, createPaidMemberDoc, deletePaidMemberDoc, updateUserDocPaidMemberBool, deleteAllPaidMembers } from "../../utils/firebase/firebase.utils";
+import { auth, updatePaidMemberDoc, createPaidMemberDoc, deletePaidMemberDoc, updateUserDocPaidMemberBool, deleteAllPaidMembers, db } from "../../utils/firebase/firebase.utils";
+import { collection, query, onSnapshot } from "firebase/firestore";
 
 import { fetchPaidMembersStartAsync } from '../../store/paid_members/paid_members.action';
 
@@ -32,7 +33,7 @@ import APPLICATION_VARIABLES from '../../settings';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const TOAST_PROPS = {
-    position: "top-right",
+    position: "bottom-center",
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -59,18 +60,45 @@ const PaidMemberList = () => {
     const [showSpinner, setShowSpinner] = useState(false);
     const [allDeleteToggle, setAllDeleteToggle] = useState(false);
     const [showAllDeleteDialogue, setShowAllDeleteDialogue] = useState(false);
+    const [paid_members, setPaidMembers] = useState([]);
+    const [isPaidMembersListLoading, setIsPaidMembersLoading] = useState(true);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const { role } = useSelector(selectCurrentUser);
 
-    const paid_members = useSelector(selectPaidMembersList);
-    const isPaidMembersListLoading = useSelector(selectPaidMembersListIsLoading);
+    // const paid_members = useSelector(selectPaidMembersList);
+    // const isPaidMembersListLoading = useSelector(selectPaidMembersListIsLoading);
+
+    // useEffect(() => {
+    //     dispatch(fetchPaidMembersStartAsync());
+    // }, []);
 
     useEffect(() => {
-        dispatch(fetchPaidMembersStartAsync());
+        setIsPaidMembersLoading(true);
+
+        const q = query(collection(db, "paid_members"));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const paid_members_list = [];
+            querySnapshot.forEach((doc) => {
+                paid_members_list.push(doc.data());
+            });
+
+            setPaidMembers(paid_members_list);
+        });
+
+        return unsubscribe
     }, []);
+
+
+
+    useEffect(() => {
+        if (paid_members) {
+            setIsPaidMembersLoading(false);
+        }
+    }, [paid_members]);
+
 
     useEffect(() => {
         if (loading) return;
@@ -110,7 +138,8 @@ const PaidMemberList = () => {
 
                 if (paid_member_student_nums.indexOf(studentNum) === -1) {
                     createPaidMemberDoc({ name, email, studentNum }).then(() => {
-                        window.location.reload(false);
+                        //window.location.reload(false);
+                        toast.success(`Created paid member`, TOAST_PROPS);
                     });
                 } else {
                     toast.error('Student already exsists', TOAST_PROPS);
@@ -125,7 +154,10 @@ const PaidMemberList = () => {
                     name: memberName.value,
                 };
         
-                updatePaidMemberDoc(memberDoc).then(() => {window.location.reload(false)});
+                updatePaidMemberDoc(memberDoc).then(() => {
+                    //window.location.reload(false)
+                    toast.success(`Updated paid member`, TOAST_PROPS);
+                });
 
                 //alert(`${userEmail.value} is successfully updated.`);
                 handleModalClose();
@@ -142,9 +174,11 @@ const PaidMemberList = () => {
 
         deletePaidMemberDoc(studentNum).then(() => {
             updateUserDocPaidMemberBool(email, false).then(() => {
-                window.location.reload(false);
+                //window.location.reload(false);
+                toast.success(`Deleted paid member`, TOAST_PROPS);
             }).catch((error) => {
-                window.location.reload(false);
+                // window.location.reload(false);
+                toast.error(`Could not delete`, TOAST_PROPS);
             });
         });
 
