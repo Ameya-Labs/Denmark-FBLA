@@ -31,7 +31,7 @@ const APPLICATION_VARIABLES = {
   CALENDAR_MEETING_COLOR: "green",
 
   // Help Information
-  SUPPORT_EMAIL:"ajadhav@stanford.edu",
+  SUPPORT_EMAIL:"ameyalabs.help@gmail.com",
   SUPPORT_EMAIL_SUBJECT:"Technical Support for Denmark FBLA App",
   GENERAL_EMAIL:"denmark.hs.fbla@gmail.com",
   GENERAL_EMAIL_SUBJECT:"General Support for Denmark FBLA App",
