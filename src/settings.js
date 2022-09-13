@@ -7,6 +7,21 @@ const APPLICATION_VARIABLES = {
   LANDING_PAGE_DESCRIPTION: "Denmark’s Future Business Leaders of America (FBLA) is Denmark High School’s premier business and computer science student-led organization, driven to help students reach their goals in the professional world. Today, Denmark FBLA stands strong as an organization of over 300 talented individuals who strive to make their mark by shaping a brighter future for their community.",
   DEFAULT_PASSWORD:"DenmarkFBLA123",
 
+  // Membership
+  // EXCLUDE_FEATURES codes -> COMP_EVENTS, (more coming soon)
+  MEMBERSHIPS: [
+    {
+      TYPE: 'GENERAL',
+      PRICE: '20',
+      EXCLUDE_FEATURES: ['COMP_EVENTS'],
+    },
+    {
+      TYPE: 'PREMIUM',
+      PRICE: '35',
+      EXCLUDE_FEATURES: [],
+    },
+  ],
+
   // Socials (leave blank if chapter doesn't have one)
   CHAPTER_INSTAGRAM_URL: "https://www.instagram.com/denmarkfbla/",
   CHAPTER_TWITTER_URL: "https://twitter.com/DenmarkFbla",
