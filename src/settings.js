@@ -11,13 +11,13 @@ const APPLICATION_VARIABLES = {
   // EXCLUDE_FEATURES codes -> COMP_EVENTS, (more coming soon)
   MEMBERSHIPS: [
     {
-      TYPE: 'GENERAL',
+      TYPE: 'SILVER',
       PRICE: '20',
       EXCLUDE_FEATURES: ['COMP_EVENTS'],
     },
     {
-      TYPE: 'PREMIUM',
-      PRICE: '35',
+      TYPE: 'GOLD',
+      PRICE: '50',
       EXCLUDE_FEATURES: [],
     },
   ],
