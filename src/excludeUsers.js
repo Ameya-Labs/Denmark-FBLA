@@ -2,7 +2,7 @@
 
 const EXCLUDE_ACCOUNTS = {
   officers: ['jadhavameyak@gmail.com', 'ameyalabs-fbla@gmail.com', 'ameyalabs.help@gmail.com'],
-  advisers: ['jadhavameyak@gmail.com', 'ameyalabs-fbla@gmail.com', 'ameyalabs.help@gmail.com'],
+  advisers: ['jadhavameyak@gmail.com', 'ameyalabs-fbla@gmail.com', 'ameyalabs.help@gmail.com', 'arnold9@gmail.com'],
 }
 
 export default EXCLUDE_ACCOUNTS;
